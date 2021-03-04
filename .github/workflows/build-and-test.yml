@@ -1,0 +1,32 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  DOTNET_VERSION: "3.1.100" # set this to the dot net version to use
+
+jobs:
+  build-and-test:
+    runs-on: windows-2019
+    steps:
+      # Checkout the repo
+      - uses: actions/checkout@master
+
+      # Setup .NET Core SDK
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      # Build
+      - name: dotnet build
+        run: .\scripts\build.ps1
+        shell: powershell
+
+      # Build
+      - name: dotnet test
+        run: .\scripts\test.ps1
+        shell: powershell
